@@ -15,7 +15,7 @@ var_dump($twitter->getProfile());
 ```
 To load all the reachable tweets (last 20 tweets)
 ```php
-$twitter = new \Bissolli\TwitterScraper\Twitter('official_php')->loadTweets();
+$twitter = (new \Bissolli\TwitterScraper\Twitter('official_php'))->loadTweets();
 var_dump($twitter->getProfile());
 var_dump($twitter->getTweets());
 ```
