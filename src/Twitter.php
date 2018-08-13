@@ -4,7 +4,7 @@ namespace Bissolli\TwitterScraper;
 
 use Sunra\PhpSimple\HtmlDomParser;
 
-class TwitterScraper
+class Scraper
 {
     public function getAccount($username)
     {
