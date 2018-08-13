@@ -2,110 +2,90 @@
 
 namespace Bissolli\TwitterScraper;
 
-use Sunra\PhpSimple\HtmlDomParser;
+use Bissolli\TwitterScraper\Models\Account;
+use Bissolli\TwitterScraper\Models\Tweet;
+use Bissolli\TwitterScraper\Traits\HelpersTrait;
+use Carbon\Carbon;
+use PHPHtmlParser\Dom;
 
-class Scraper
+class Twitter extends TwitterAbstract
 {
-    public function getAccount($username)
+    use HelpersTrait;
+
+    /**
+     * Create a new Twitter instance
+     *
+     * @param string $username
+     */
+    public function __construct($username)
     {
-        $tweet_results = [];
+        $this->setHandle($username);
 
-        $html = HtmlDomParser::file_get_html('https://twitter.com/'.$username);
+        $dom = new Dom();
+        $dom->load('https://twitter.com/'.$username);
 
-        if($html){
-            foreach($html->find('div[class=tweet]') as $tweet){
-                $tweet_result = new \stdClass();
+        $this->setDomHtml($dom);
 
-                //tweet ID
-                $property = 'data-item-id';
-                $tweet_result->id = $tweet->$property;
+        $this->extractProfileCard();
 
-                //username of tweet
-                $property = 'data-screen-name';
-                $tweet_result->username = $tweet->$property;
+        return $this;
+    }
 
-                //is a retweet?
-                $tweet_is_retweet = false;
-                foreach($tweet->find('div[class=context]') as $tweet_context){
-                    if( strlen($tweet_context->innertext) > 19 ){
-                        if (sizeof($tweet_context->find('span[class=Icon--retweeted]')) > 0){
-                            $tweet_is_retweet = true;
-                            break;
-                        }
-                    }
-                }
-                $tweet_result->is_retweet = $tweet_is_retweet;
+    /**
+     * Extract basic data from user's account
+     *
+     * @return void
+     */
+    protected function extractProfileCard()
+    {
+        $profileCard = $this->domHtml->find('div.ProfileHeaderCard');
+        $profileNav = $this->domHtml->find('div.ProfileNav');
 
-                //tweet text
-                $tweet_text = "";
-                $tweet_images = [];
-                foreach($tweet->find('div[class=js-tweet-text-container]') as $tweet_content){
-                    foreach($tweet_content->find('p[class=tweet-text]') as $tweet_content_text){
-                        $tweet_text = str_replace("<a", " <a", $tweet_content_text->innertext);
-                        $tweet_text = strip_tags($tweet_text);
-                        break;
-                    }
-                    break;
-                }
-                $tweet_result->text = $tweet_text;
+        $account = Account::create([
+            'name' => $this->sanitizeNodeText($profileCard->find('.ProfileHeaderCard-nameLink')[0]),
+            'joined_at' => $profileCard->find('.ProfileHeaderCard-joinDateText')[0]->getAttribute('title'),
+            'locale' => $this->sanitizeNodeText($profileCard->find('.ProfileHeaderCard-locationText')[0]),
+            'website' => $this->sanitizeNodeAttr($profileCard->find('.ProfileHeaderCard-url a')[0]),
+            'date_of_birth' => $this->sanitizeNodeText($profileCard->find('.ProfileHeaderCard-birthdateText span')[0]),
+            'bio' => $this->sanitizeNodeText($profileCard->find('.ProfileHeaderCard-bio')[0]),
+            'avatar_url' => $this->sanitizeNodeAttr($this->domHtml->find('img.ProfileAvatar-image')[0], 'src'),
+            'cover_url' => $this->sanitizeNodeAttr($this->domHtml->find('div.ProfileCanopy-headerBg > img')[0], 'src'),
+            'tweets_count' => $this->sanitizeNodeAttr($profileNav->find('.ProfileNav-item--tweets .ProfileNav-value')[0], 'data-count'),
+            'following_count' => $this->sanitizeNodeAttr($profileNav->find('.ProfileNav-item--following .ProfileNav-value')[0], 'data-count'),
+            'followers_count' => $this->sanitizeNodeAttr($profileNav->find('.ProfileNav-item--followers .ProfileNav-value')[0], 'data-count'),
+            'favorites_count' => $this->sanitizeNodeAttr($profileNav->find('.ProfileNav-item--favorites .ProfileNav-value')[0], 'data-count'),
+            'lists_count' => $this->sanitizeNodeText($profileNav->find('.ProfileNav-item--lists .ProfileNav-value')[0], 0),
+            'is_verified' => count($this->domHtml->find('.ProfileHeaderCard-badges .Icon--verified')[0]) > 0,
+        ]);
 
-                //tweet time
-                $time = null;
-                $property = 'data-time';
-                foreach($tweet->find('small[class=time]') as $tweet_time){
-                    foreach($tweet_time->find('span[class=_timestamp]') as $timestamp){
-                        $time = $timestamp->$property;
-                        break;
-                    }
-                    break;
-                }
-                $tweet_result->time = $time;
+        $this->setProfile($account);
+    }
 
-                //media
-                $media = [];
-                foreach($tweet->find('div[class=AdaptiveMedia-container]') as $media_container){
-                    foreach($media_container->find('img') as $image_tag){
-                        array_push($media, $image_tag->src);
-                    }
-                    break;
-                }
-                $tweet_result->media = $media;
+    /**
+     * Load last X reachable tweets from the user's account
+     *
+     * @return void
+     */
+    public function loadTweets()
+    {
+        $tweets = [];
 
-                $property = 'data-tweet-stat-count';
-                //counts
-                $replies = 0;
-                $retweets = 0;
-                $favourites = 0;
-                foreach($tweet->find('div[class=ProfileTweet-actionCountList]') as $counts){
-                    foreach($counts->find('span[class=ProfileTweet-action--reply]') as $reply_count){
-                        foreach($reply_count->find('span[class=ProfileTweet-actionCount]') as $action_count){
-                            $replies = (int) $action_count->$property;
-                            break;
-                        }
-                        break;
-                    }
-                    foreach($counts->find('span[class=ProfileTweet-action--retweet]') as $reply_count){
-                        foreach($reply_count->find('span[class=ProfileTweet-actionCount]') as $action_count){
-                            $retweets = (int) $action_count->$property;
-                            break;
-                        }
-                        break;
-                    }
-                    foreach($counts->find('span[class=ProfileTweet-action--favorite]') as $reply_count){
-                        foreach($reply_count->find('span[class=ProfileTweet-actionCount]') as $action_count){
-                            $favourites = (int) $action_count->$property;
-                            break;
-                        }
-                        break;
-                    }
-                }
-                $tweet_result->reply = $replies;
-                $tweet_result->retweet = $retweets;
-                $tweet_result->favourite = $favourites;
-
-                array_push($tweet_results, $tweet_result);
-            }
+        foreach($this->domHtml->find('li[data-item-type="tweet"] div.tweet') as $tweet) {
+            array_push(
+                $tweets,
+                Tweet::create([
+                    'id' => $tweet->{'data-tweet-id'},
+                    'username' => $tweet->{'data-screen-name'},
+                    'is_retweet' => count($tweet->find('.js-retweet-text')[0]) > 0,
+                    'content' => $this->sanitizeNodeText($tweet->find('.tweet-text')[0]),
+                    'created_at' => Carbon::createFromTimestampMs($this->sanitizeNodeAttr($tweet->find('.tweet-timestamp span')[0], 'data-time-ms')),
+                    'replies_count' => $this->countAttr($tweet->find('.ProfileTweet-action--reply .ProfileTweet-actionCount'), 'data-tweet-stat-count'),
+                    'retweets_count' => $this->countAttr($tweet->find('.ProfileTweet-action--retweet .ProfileTweet-actionCount'), 'data-tweet-stat-count'),
+                    'favorites_count' => $this->countAttr($tweet->find('.ProfileTweet-action--favorite .ProfileTweet-actionCount'), 'data-tweet-stat-count'),
+                ])
+            );
         }
-        return $tweet_results;
+
+        $this->setTweets($tweets);
     }
 }
