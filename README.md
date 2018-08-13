@@ -31,4 +31,4 @@ composer require bissolli/twitter-php-scraper
 You can download it [here](https://getcomposer.org/download/).
 
 # TODO
-* [ ] Implement .travis.yml 
+* [X] Implement .travis.yml 
