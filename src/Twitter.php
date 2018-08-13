@@ -64,7 +64,7 @@ class Twitter extends TwitterAbstract
     /**
      * Load last X reachable tweets from the user's account
      *
-     * @return void
+     * @return Twitter
      */
     public function loadTweets()
     {
@@ -87,5 +87,7 @@ class Twitter extends TwitterAbstract
         }
 
         $this->setTweets($tweets);
+
+        return $this;
     }
 }
