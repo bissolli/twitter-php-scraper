@@ -1,0 +1,11 @@
+{
+    "name": "bissolli/twitter-php-scrapper",
+    "description": "Twitter PHP Scrapper. Get account information, tweets, likes, re-tweets and comments.",
+    "authors": [
+        {
+            "name": "Gustavo Bissolli",
+            "email": "gustavo.bissolli@gmail.com"
+        }
+    ],
+    "require": {}
+}
