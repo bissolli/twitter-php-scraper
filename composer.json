@@ -1,7 +1,7 @@
 {
     "name": "bissolli/twitter-php-scraper",
     "description": "Twitter PHP Scraper. Get account information, tweets, likes, re-tweets and comments.",
-    "keywords": [ "twitter", "profile", "tweets", "scraper" ],
+    "keywords": [ "twitter", "profile", "tweets", "scraper", "laravel" ],
     "type": "library",
     "homepage": "https://github.com/bissolli/twitter-php-scraper",
     "license": "MIT",
