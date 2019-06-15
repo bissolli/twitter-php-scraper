@@ -2,7 +2,7 @@
 
 namespace Bissolli\TwitterScraper\Models;
 
-class Tweet extends ModelAbstract
+class Tweet extends ModelAbstract implements \JsonSerializable
 {
     /**
      * Id
@@ -148,5 +148,25 @@ class Tweet extends ModelAbstract
                 $this->favoritesCount = $value;
                 break;
         }
+    }
+
+    /**
+     * Implements JsonSerializable
+     *
+     * @return array|mixed
+     */
+    public function jsonSerialize()
+    {
+        return
+        [
+            'id' => $this->getId(),
+            'username' => $this->getUsername(),
+            'is_retweet' => $this->getisRetweet(),
+            'content' => $this->getContent(),
+            'created_at' => $this->getCreatedAt(),
+            'replies_count' => $this->getRepliesCount(),
+            'retweets_count' => $this->getRetweetsCount(),
+            'favorites_count' => $this->getFavoritesCount()
+        ];
     }
 }

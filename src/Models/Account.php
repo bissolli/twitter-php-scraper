@@ -2,7 +2,7 @@
 
 namespace Bissolli\TwitterScraper\Models;
 
-class Account extends ModelAbstract
+class Account extends ModelAbstract implements \JsonSerializable
 {
     /**
      * Name
@@ -179,7 +179,7 @@ class Account extends ModelAbstract
     /**
      * @return bool
      */
-    public function isVerified()
+    public function getIsVerified()
     {
         return $this->isVerified;
     }
@@ -250,5 +250,31 @@ class Account extends ModelAbstract
                 $this->isVerified = (bool) $value;
                 break;
         }
+    }
+
+    /**
+     * Implements JsonSerializable
+     *
+     * @return array|mixed
+     */
+    public function jsonSerialize()
+    {
+        return
+            [
+                'name' => $this->getName(),
+                'joined_at' => $this->getJoinedAt(),
+                'avatar_url' => $this->getAvatarUrl(),
+                'cover_url' => $this->getCoverUrl(),
+                'website' => $this->getWebsite(),
+                'locale' => $this->getLocale(),
+                'bio' => $this->getBio(),
+                'following_count' => $this->getFollowingCount(),
+                'followers_count' => $this->getFollowersCount(),
+                'tweets_count' => $this->getTweetsCount(),
+                'favorites_count' => $this->getFavoritesCount(),
+                'lists_count' => $this->getListsCount(),
+                'date_of_birth' => $this->getDateOfBirth(),
+                'is_verified' => $this->getIsVerified(),
+            ];
     }
 }
