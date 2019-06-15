@@ -76,7 +76,7 @@ class Twitter extends TwitterAbstract
                 Tweet::create([
                     'id' => $tweet->{'data-tweet-id'},
                     'username' => $tweet->{'data-screen-name'},
-                    'is_retweet' => count($tweet->find('.js-retweet-text')[0]) > 0,
+                    'is_retweet' => !is_null($tweet->find('.js-retweet-text')[0]),
                     'content' => $this->sanitizeNodeText($tweet->find('.tweet-text')[0]),
                     'created_at' => Carbon::createFromTimestampMs($this->sanitizeNodeAttr($tweet->find('.tweet-timestamp span')[0], 'data-time-ms')),
                     'replies_count' => $this->countAttr($tweet->find('.ProfileTweet-action--reply .ProfileTweet-actionCount'), 'data-tweet-stat-count'),

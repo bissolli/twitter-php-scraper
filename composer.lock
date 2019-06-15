@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f95be0242b1bf84a27fcd57bd5dd0691",
+    "content-hash": "14ce7f660eee1d6bf04b3fc282fcc274",
     "packages": [
         {
             "name": "nesbot/carbon",
@@ -63,26 +63,27 @@
         },
         {
             "name": "paquettg/php-html-parser",
-            "version": "1.7.0",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paquettg/php-html-parser.git",
-                "reference": "18845e09831dd0772b88b51e788a4f74c701224c"
+                "reference": "77e4a44b0916690b4300fe9abf98fd05bbba48f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paquettg/php-html-parser/zipball/18845e09831dd0772b88b51e788a4f74c701224c",
-                "reference": "18845e09831dd0772b88b51e788a4f74c701224c",
+                "url": "https://api.github.com/repos/paquettg/php-html-parser/zipball/77e4a44b0916690b4300fe9abf98fd05bbba48f0",
+                "reference": "77e4a44b0916690b4300fe9abf98fd05bbba48f0",
                 "shasum": ""
             },
             "require": {
-                "paquettg/string-encode": "~0.1.0",
-                "php": ">=5.4"
+                "ext-mbstring": "*",
+                "paquettg/string-encode": "~1.0.0",
+                "php": ">=7.1"
             },
             "require-dev": {
-                "mockery/mockery": "~0.9.0",
-                "phpunit/phpunit": "~4.8.0",
-                "satooshi/php-coveralls": "~0.6.0"
+                "mockery/mockery": "^1.2",
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": "^7.5.1"
             },
             "type": "library",
             "autoload": {
@@ -108,27 +109,27 @@
                 "html",
                 "parser"
             ],
-            "time": "2016-04-06T15:24:40+00:00"
+            "time": "2019-02-10T01:35:49+00:00"
         },
         {
             "name": "paquettg/string-encode",
-            "version": "0.1.1",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paquettg/string-encoder.git",
-                "reference": "cf08343649701979f581c1601d01247fa3782439"
+                "reference": "a8708e9fac9d5ddfc8fc2aac6004e2cd05d80fee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paquettg/string-encoder/zipball/cf08343649701979f581c1601d01247fa3782439",
-                "reference": "cf08343649701979f581c1601d01247fa3782439",
+                "url": "https://api.github.com/repos/paquettg/string-encoder/zipball/a8708e9fac9d5ddfc8fc2aac6004e2cd05d80fee",
+                "reference": "a8708e9fac9d5ddfc8fc2aac6004e2cd05d80fee",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4"
+                "php": ">=7.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "3.7.*"
+                "phpunit/phpunit": "^7.5.1"
             },
             "type": "library",
             "autoload": {
@@ -154,55 +155,7 @@
                 "encoding",
                 "string"
             ],
-            "time": "2014-05-29T18:38:09+00:00"
-        },
-        {
-            "name": "sunra/php-simple-html-dom-parser",
-            "version": "v1.5.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sunra/php-simple-html-dom-parser.git",
-                "reference": "75b9b1cb64502d8f8c04dc11b5906b969af247c6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sunra/php-simple-html-dom-parser/zipball/75b9b1cb64502d8f8c04dc11b5906b969af247c6",
-                "reference": "75b9b1cb64502d8f8c04dc11b5906b969af247c6",
-                "shasum": ""
-            },
-            "require": {
-                "ext-mbstring": "*",
-                "php": ">=5.3.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Sunra\\PhpSimple\\HtmlDomParser": "Src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Sunra",
-                    "email": "sunra@yandex.ru",
-                    "homepage": "https://github.com/sunra"
-                },
-                {
-                    "name": "S.C. Chen",
-                    "homepage": "http://sourceforge.net/projects/simplehtmldom/"
-                }
-            ],
-            "description": "Composer adaptation of: A HTML DOM parser written in PHP5+ let you manipulate HTML in a very easy way! Require PHP 5+. Supports invalid HTML. Find tags on an HTML page with selectors just like jQuery. Extract contents from HTML in a single line.",
-            "homepage": "https://github.com/sunra/php-simple-html-dom-parser",
-            "keywords": [
-                "dom",
-                "html",
-                "parser"
-            ],
-            "time": "2016-11-22T22:57:47+00:00"
+            "time": "2018-12-21T02:25:09+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -1040,6 +993,7 @@
                 "mock",
                 "xunit"
             ],
+            "abandoned": true,
             "time": "2017-06-30T09:13:00+00:00"
         },
         {
@@ -1556,6 +1510,54 @@
             "time": "2016-10-03T07:35:21+00:00"
         },
         {
+            "name": "sunra/php-simple-html-dom-parser",
+            "version": "v1.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sunra/php-simple-html-dom-parser.git",
+                "reference": "75b9b1cb64502d8f8c04dc11b5906b969af247c6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sunra/php-simple-html-dom-parser/zipball/75b9b1cb64502d8f8c04dc11b5906b969af247c6",
+                "reference": "75b9b1cb64502d8f8c04dc11b5906b969af247c6",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Sunra\\PhpSimple\\HtmlDomParser": "Src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sunra",
+                    "email": "sunra@yandex.ru",
+                    "homepage": "https://github.com/sunra"
+                },
+                {
+                    "name": "S.C. Chen",
+                    "homepage": "http://sourceforge.net/projects/simplehtmldom/"
+                }
+            ],
+            "description": "Composer adaptation of: A HTML DOM parser written in PHP5+ let you manipulate HTML in a very easy way! Require PHP 5+. Supports invalid HTML. Find tags on an HTML page with selectors just like jQuery. Extract contents from HTML in a single line.",
+            "homepage": "https://github.com/sunra/php-simple-html-dom-parser",
+            "keywords": [
+                "dom",
+                "html",
+                "parser"
+            ],
+            "time": "2016-11-22T22:57:47+00:00"
+        },
+        {
             "name": "symfony/polyfill-ctype",
             "version": "v1.9.0",
             "source": {
@@ -1729,7 +1731,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.5.0"
+        "php": ">=7.1.0"
     },
     "platform-dev": []
 }
